@@ -11,29 +11,25 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
+    clock = pygame.time.Clock()
+    dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     
-    i = 0
-#   while True:
-#       log_state()
-#       for event in pygame.event.get():
-#           if event.type == pygame.QUIT:
-#               return
-#       screen.fill("black")
-#       pygame.display.flip()
-
-
-    i = 0
     while True:
         log_state()
+
+        # w ten sposób można zamykać grę przez X w oknie, a nie w terminalu 
         for event in pygame.event.get():
-            pass
-        colors = ["red", "green", "yellow", "blue", "pink", "white"]
-        screen.fill(colors[i])
-        i += 1 
-        i = i % len(colors)
+            if event.type == pygame.QUIT:
+                return
+        screen.fill("black")
+
+        #odświeżenie ekranu
         pygame.display.flip()
-        time.sleep(1)
+
+        # ograniczenie do 60fps, dodatkowo .tick() zwraca czas od ostatniego wywołania (w milisekundach)
+        dt = clock.tick(60) / 1000
+#        print(f"{dt}")
 
 if __name__ == "__main__":
     main()
