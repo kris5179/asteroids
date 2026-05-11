@@ -3,6 +3,7 @@ import time
 from constants import SCREEN_HEIGHT      
 from constants import SCREEN_WIDTH      
 from logger import log_state
+from player import Player
 
 def main():
     pygame.init()
@@ -14,7 +15,16 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
     
+
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+
     while True:
         log_state()
 
@@ -24,12 +34,15 @@ def main():
                 return
         screen.fill("black")
 
-        #odświeżenie ekranu
-        pygame.display.flip()
+        updatable.update(dt)
+        for item in drawable:
+            item.draw(screen)
 
+
+        # odświeżenie ekranu
         # ograniczenie do 60fps, dodatkowo .tick() zwraca czas od ostatniego wywołania (w milisekundach)
+        pygame.display.flip()
         dt = clock.tick(60) / 1000
-#        print(f"{dt}")
 
 if __name__ == "__main__":
     main()
